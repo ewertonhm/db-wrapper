@@ -17,11 +17,8 @@ class DB {
     
     private function __construct() {
         try{
-            //$this->_pdo = new PDO('database:host;dname=','user','password');
-            //$conn = new PDO("pgsql:host=$this->host port=$this->port dbname=$this->dbname", "$this->username", "$this->password");
-            //echo "PDO connection object created";
-            $this->_pdo = new PDO('mysql:host=127.0.0.1;dbname=database','root','');
-            //$this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->_pdo = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=database','postgres','postgresql');
+            $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die($e->getMessage());
         }
