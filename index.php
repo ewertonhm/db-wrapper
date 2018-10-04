@@ -24,6 +24,7 @@ $db = DB::get_instance();
     $contacts = $query->get_results();
     //var_dump($contacts);
 
+    
 // função Insert
 // recebe o nome da tabela, e um array com o nome do campo e valor a ser inserido
 // monta o Insert do SQL e roda a função query passando o SQL e os valores
@@ -34,3 +35,14 @@ $db = DB::get_instance();
     
     // função recebe o nome da tabela e o array
     $db->insert('contacts',$contact);
+    
+// função Update
+// similar a função anterior, porém ao invés de inserir no banco, altera o valor 
+// recebe o nome da tabela, id e campos a serem modificado com seus respectivos valores
+// retorna true ou false;
+
+    // array com os nomes dos campos e valores
+    $contact = ['fname'=>'HARU','email'=>'haru@haru.com'];
+    
+    // função recebe tabela, id, e array 
+    $db->update('contacts',1,$contact);

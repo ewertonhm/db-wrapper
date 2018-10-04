@@ -78,6 +78,26 @@ class DB {
         }
     }
     
+    public function update($table,$id,$fields = []){
+        $fieldString = '';
+        $values = [];
+        foreach($fields as $field => $value){
+            $fieldString .= ' '.$field.' = ?,';
+            $values[] = $value;
+        }
+        $fieldString = trim($fieldString);
+        $fieldString = rtrim($fieldString,',');
+        
+        $sql = "UPDATE {$table} SET {$fieldString} WHERE id = {$id}";
+        
+        if($this->query($sql,$values)){
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    
     
     // getters
     public function get_error() {
