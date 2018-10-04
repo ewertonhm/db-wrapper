@@ -81,3 +81,14 @@ $db = DB::get_instance();
     $contacts = $db->find('contacts');
     //var_dump($contacts);
     
+// Função findFirst
+// similar a função anterior, porém retorna apenas o primeiro resultado
+    
+    $params = [
+        'conditions' => ['lname = ?','fname = ?'],
+        'bind' => ['lharu','fharu'],
+        'order' => "fname Desc",
+        'limit' => 5
+    ];
+    $contacts = $db->findFirst('contacts',$params);
+    var_dump($contacts);

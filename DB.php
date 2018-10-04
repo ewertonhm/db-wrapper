@@ -164,8 +164,11 @@ class DB {
         return false;
     }
     
-    public function findFirst(){
-        
+    public function findFirst($table, $params = []){
+        if($this->_read($table,$params)){
+            return $this->_results[0];
+        }
+        return false;
     }
     
     // getters
