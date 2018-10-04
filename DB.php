@@ -57,6 +57,29 @@ class DB {
         }
         return $this;
     }
+    
+    public function insert($table, $fields = []){
+        $fieldString = '';
+        $valueString = '';
+        $values = [];
+        foreach($fields as $field => $value){
+            $fieldString .= '`'.$field.'`,';
+            $valueString .= '?,';
+            $values[] = $value;
+        }
+        $valueString = rtrim($valueString,',');
+        $fieldString = rtrim($fieldString,',');        
+        $sql = "INSERT INTO {$table} ({$fieldString}) VALUES ({$valueString})";
+        
+        if($this->query($sql,$values)){
+            return true;
+        } else{
+            return false;
+        }
+    }
+    
+    
+    // getters
     public function get_error() {
         return $this->_error;
     }
