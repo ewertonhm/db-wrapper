@@ -12,10 +12,10 @@ $db = DB::get_instance();
 // Ao passar um SQL de inserção, no lugar dos valores inserir ?, a função ira fazer um bind deles aos valores passados no Array 
     
     // array com os valores a serem inseridas no banco
-    $contact = [NULL,'Ewerton','Marschalk','Ewerton@hotmail.com','44444444444','5555555555555'];
+    $contact = ['Ewerton','Marschalk','Ewerton@hotmail.com','44444444444','5555555555555'];
 
     // chamando a função passando um SQL de inserção e um Array
-    $db->query("INSERT INTO `contacts` (`id`,`fname`, `lname`, `email`, `cell_phone`, `home_phone`) VALUES (?, ?, ?, ?, ?, ?)",$contact);
+    $db->query("INSERT INTO contacts (fname, lname, email, cell_phone, home_phone) VALUES (?, ?, ?, ?, ?)",$contact);
 
     // chamando a função com um SQL de Select, o $query vai receber um objeto com o resultado
     $query = $db->query("SELECT * FROM contacts ORDER BY lname, fname");

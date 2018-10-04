@@ -60,7 +60,7 @@ class DB {
         $valueString = '';
         $values = [];
         foreach($fields as $field => $value){
-            $fieldString .= '`'.$field.'`,';
+            $fieldString .= $field.',';
             $valueString .= '?,';
             $values[] = $value;
         }
