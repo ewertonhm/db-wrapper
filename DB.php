@@ -98,6 +98,75 @@ class DB {
         
     }
     
+    public function delete($table,$id){        
+        $sql = "DELETE FROM {$table} WHERE id = {$id}";
+        if(!$this->query($sql)->get_error()){
+            return true;
+        } else {
+            return false;            
+        }
+    }
+    
+    private function _read($table,$params = []){
+        $conditionString = '';
+        $bind = [];
+        $order = '';
+        $limit = '';
+        
+        // conditions
+        if(isset($params['conditions'])){
+            if(is_array($params['conditions'])){
+                foreach($params['conditions'] as $condition){
+                    $conditionString .= ' '.$condition.' AND';
+                }
+                $conditionString = trim($conditionString);
+                $conditionString = rtrim($conditionString,' AND');
+            } else{
+                $conditionString = $params['conditions'];
+            }
+            
+            if($conditionString != ''){
+                $conditionString = ' WHERE '.$conditionString;
+            }
+        }
+        
+        //bind
+        if(array_key_exists('bind', $params)){
+            $bind = $params['bind'];
+        }
+        
+        //order
+        if(array_key_exists('order', $params)){
+            $order = ' ORDER BY '.$params['order'];
+        }   
+        
+        //limit
+        if(array_key_exists('limit', $params)){
+           $limit = ' LIMIT '.$params['limit']; 
+        }
+        
+        $sql = "SELECT * FROM {$table}{$conditionString}{$order}{$limit}";
+
+        //  se o query rodar mas não tiver resultados vai retornar false
+        // se o query tiver sucesso e tiver resultados vai retornar true
+        // se o query não rodar retorna falso;
+        if($this->query($sql,$bind)){
+            if(sizeof($this->_results) == 0) {
+                return false;  
+            } return true;
+        } return false;
+    } 
+    
+    public function find($table,$params = []){
+        if($this->_read($table,$params)){
+            return $this->_results;
+        }
+        return false;
+    }
+    
+    public function findFirst(){
+        
+    }
     
     // getters
     public function get_error() {

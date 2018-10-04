@@ -46,3 +46,38 @@ $db = DB::get_instance();
     
     // função recebe tabela, id, e array 
     $db->update('contacts',1,$contact);
+    
+// função Delete
+// deleta um entrada do banco de dados, recebe a tabela e o Id
+// retorna true ou false;
+    
+    $db->delete('contacts',20);
+    
+    
+// Função find
+// recebe um array com parametros
+// condition é os campos para o WHERE
+// bind é os valores dos campos no WHERE
+    // exemplo WHERE 'conditions' = 'bind'
+// order é o valor do ORDER BY
+// limit é o limite de resultados para exibir
+// qualquer um dos campos pode ser deixado em branco
+// retorna um array de objetos com o resultado
+
+   // exemplo de array de parametros
+    $params = [
+        'conditions' => ['lname = ?','fname = ?'],
+        'bind' => ['lharu','fharu'],
+        'order' => "fname Desc",
+        'limit' => 5
+    ];
+    
+    // chamando a função na tabela contacts com os parametros do array 
+    $contacts = $db->find('contacts',$params);
+    //var_dump($contacts);
+
+    // não é necessario passar nenhum parametro
+    // nesse caso o comando vai rodar um "SELECT * FROM tabela"
+    $contacts = $db->find('contacts');
+    //var_dump($contacts);
+    
