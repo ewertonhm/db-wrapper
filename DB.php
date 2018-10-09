@@ -13,12 +13,12 @@
  */
 class DB {
     private static $_instance = null;
-    private $_pdo, $_query, $_error = false, $_results, $_count = 0, $_lastInsertID = '';
+    private $_pdo, $_query, $_error = false, $_results, $_count = 0, $_lastInsertID = 'NULL';
     
     private function __construct() {
         try{
-            $this->_pdo = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=database','postgres','postgresql');
-            $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->_pdo = new PDO('pgsql:host=35.202.123.83;port=5432;dbname=database','postgres','k#c+wiv@');
+            //$this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die($e->getMessage());
         }
@@ -46,7 +46,9 @@ class DB {
             if($this->_query->execute()){
                 $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
                 $this->_count = $this->_query->rowCount();
-                $this->_lastInsertID = $this->_pdo->lastInsertId();
+                if(NULL !== $this->_pdo->lastInsertId()){
+                    $this->_lastInsertID = $this->_pdo->lastInsertId();
+                }
             } else{
                 $this->_error = true;
             }  
@@ -110,6 +112,21 @@ class DB {
         $order = '';
         $limit = '';
         
+        
+        
+        //innerjoin
+        if(array_key_exists('joins', $params)){                
+            function bindjoin($array,$counter){
+                return $array["$counter"];
+            }
+            $counter = 0;
+            foreach($params['joins'] as $join){
+                $innerJoin .= ' INNER JOIN '.$join.' ON '.bindjoin($params['bindjoin'], $counter);
+                $counter++;
+            }
+        }
+
+        
         // conditions
         if(isset($params['conditions'])){
             if(is_array($params['conditions'])){
@@ -135,24 +152,40 @@ class DB {
         //order
         if(array_key_exists('order', $params)){
             $order = ' ORDER BY '.$params['order'];
-        }   
+        }
+        
         
         //limit
         if(array_key_exists('limit', $params)){
            $limit = ' LIMIT '.$params['limit']; 
         }
         
-        $sql = "SELECT * FROM {$table}{$conditionString}{$order}{$limit}";
+        $sql = "SELECT * FROM {$table}{$innerJoin}{$conditionString}{$order}{$limit}";
+        var_dump($sql);
 
         //  se o query rodar mas não tiver resultados vai retornar false
         // se o query tiver sucesso e tiver resultados vai retornar true
         // se o query não rodar retorna falso;
         if($this->query($sql,$bind)){
-            if(sizeof($this->_results) == 0) {
-                return false;  
-            } return true;
-        } return false;
-    } 
+            if(is_array($this->_results)){
+                if(sizeof($this->_results) == 0) {
+                    return false;  
+                } else {
+                    return true;
+                }    
+            } elseif(is_object($this->_results)) {
+                if(sizeof($this->_results) == 0) {
+                    return false;                            
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        } 
+    }
     
     public function find($table,$params = []){
         if($this->_read($table,$params)){

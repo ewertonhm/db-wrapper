@@ -56,6 +56,8 @@ $db = DB::get_instance();
     
 // Função find
 // recebe um array com parametros
+// joins é a tabela onde dar inner join
+// binjoins é as PK e FKs
 // condition é os campos para o WHERE
 // bind é os valores dos campos no WHERE
     // exemplo WHERE 'conditions' = 'bind'
@@ -66,6 +68,8 @@ $db = DB::get_instance();
 
    // exemplo de array de parametros
     $params = [
+        'joins' => ['album','midia'],
+        'bindjoin' => ['produto.cod_album = album.id','produto.cod_midia = midia.id'],
         'conditions' => ['lname = ?','fname = ?'],
         'bind' => ['lharu','fharu'],
         'order' => "fname Desc",
@@ -74,12 +78,14 @@ $db = DB::get_instance();
     
     // chamando a função na tabela contacts com os parametros do array 
     $contacts = $db->find('contacts',$params);
-    //var_dump($contacts);
+
+    $resultados = $db->get_results;
+    
 
     // não é necessario passar nenhum parametro
     // nesse caso o comando vai rodar um "SELECT * FROM tabela"
     $contacts = $db->find('contacts');
-    //var_dump($contacts);
+    // var_dump($contacts);
     
 // Função findFirst
 // similar a função anterior, porém retorna apenas o primeiro resultado
