@@ -56,14 +56,14 @@ Dos campos do array:
 	• order: valores para orderby
 	• limit: limita o numero de resultados
 	exemplo de array:
-	`$params = [`
-	`'joins' => ['album','midia'],`
-`'bindjoin' => ['produto.cod_album = album.id','produto.cod_midia = midia.id'],`
-   ` 'conditions' => ['lname = ?','fname = ?'],`
-`'bind' => ['lharu','fharu'],`
-`'order' => "fname Desc",`
-` 'limit' => 5`
-`];`
+	`$params = [
+	'joins' => ['album','midia'],
+'bindjoin' => ['produto.cod_album = album.id','produto.cod_midia = midia.id'],
+    'conditions' => ['lname = ?','fname = ?'],
+'bind' => ['lharu','fharu'],
+'order' => "fname Desc",
+ 'limit' => 5
+];`
 chamando a função com o array:
 `$contacts = $db->find('contacts',$params);`
 `$resultados = $db->get_results;`
