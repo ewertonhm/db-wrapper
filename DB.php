@@ -120,6 +120,8 @@ class DB implements dbControl{
                 $innerJoin .= ' INNER JOIN '.$join.' ON '.bindjoin($params['bindjoin'], $counter);
                 $counter++;
             }
+        } else{
+            $innerJoin = '';
         }
 
         
