@@ -1,17 +1,13 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of DB
  *
  * @author Ewerton
  */
-class DB {
+
+require_once 'dbControl.php';
+
+class DB implements dbControl{
     private static $_instance = null;
     private $_pdo, $_query, $_error = false, $_results, $_count = 0, $_lastInsertID = 'NULL';
     
