@@ -6,10 +6,10 @@
  */
 interface dbControl {
     public static function get_instance();
-    public function query();
-    public function insert();
-    public function update();
-    public function delete();
-    public function find(); 
-    public function findFirst();
+    public function query($sql,$params = []);
+    public function insert($table, $fields = []);
+    public function update($table,$id,$fields = []);
+    public function delete($table,$id);
+    public function find($table,$params = []); 
+    public function findFirst($table,$params = []);
 }
